@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<style>
+    body {
+      background-color:MintCream;
+      align-items: center;
+      text-align: center;
+      font-family: Times New Roman ;
+    }
+    h3{
+      color:orange;
+    }
+    p{
+      font-size: 20px;
+      color: lightcoral;
+      font-weight: 500;
+    }
+
+    td,
+    th {
+      border: 1px solid #ddd;
+      padding: 8px;
+    }
+
+    th {
+      padding-top: 15px;
+      padding-bottom: 15px;
+      text-align: center;
+      background-color: pink;
+      color: black;
+    }
+    tr:nth-child(15)
+{
+  background-color: green;
+  color:white;
+}
+  </style>
+
+<body>
+<h1> Enter Pincode</h1>
+<div>
+<button type="button" Submit!</button>
+
+<form>
+<p>Pincode: <input type="text" id="txtPincode" size=50 name="Pincode"> </p><br>
+<input type="button" Id= "submit" value="Submit" />
+</form>
+</div>
+
+<div>
+<table class="table table-striped table-hover table-bordered">
+    <thead>
+        <tr>
+            <th class="center">Block</th>
+            <th class="center">BranchType</th>
+            <th class="center">Circle</th>
+      <th class="center">Country</th>
+            <th class="center">DeliveryStatus</th>
+            <th class="center">Description</th>
+      <th class="center">District</th>
+            <th class="center">Division</th>
+            <th class="center">Name</th>
+      <th class="center">Pincode</th>
+            <th class="center">Region</th>
+            <th class="center">State</th>
+        </tr>
+    </thead>
+
+    <tbody id="contacts"></tbody>
+ </table>
+</div>
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+$(document).ready(function () {
+
+
+    $("#submit").click(function (e) {
+var Pin=$("#txtPincode").val();
+            $.ajax({
+                type: "GET",
+                url: "https://api.postalpincode.in/pincode/"+Pin+"",
+                dataType: "json",
+                success: function (data) {
+        console.log(data);
+      
+  
+            var row = "";
+
+      for(var i = 0; i < data[0].PostOffice.length; i++){ 
+                row+="<tr><td>"+data[0].PostOffice[i].Block+"</td><td>"+data[0].PostOffice[i].BranchType+"</td><td>"+data[0].PostOffice[i].Circle+"</td>";
+        row+="<td>"+data[0].PostOffice[0].Country+"</td><td>"+data[0].PostOffice[i].DeliveryStatus+"</td><td>"+data[0].PostOffice[i].Description+"</td>";
+        row+="<td>"+data[0].PostOffice[i].District+"</td><td>"+data[0].PostOffice[i].Division+"</td><td>"+data[0].PostOffice[i].Name+"</td>";
+        row+="<td>"+data[0].PostOffice[i].Pincode+"</td><td>"+data[0].PostOffice[i].Region+"</td><td>"+data[0].PostOffice[i].State+"</td></tr>";
+         }
+            $("#contacts").html(row);    
+        },
+                error: function (xhr, status, error) {
+                    alert("Result: " + status + " " + error + " " + xhr.status + " " + xhr.statusText)
+                }
+            });
+        
+    });
+  
+});
+</script>
+</html>
